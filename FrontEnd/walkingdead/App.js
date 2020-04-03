@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, PermissionsAndroid, Button } from "react-native";
 import MapView from 'react-native-maps'
-//import Geolocation from '@react-native-community/geolocation';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 export default function App() {
 
@@ -11,6 +12,7 @@ export default function App() {
       latitude: 50.643700
     }
   })
+  const [geocode, setGeocode] = React.useState(null)
 
   const requestLocationPermission = async () => {
     try {
@@ -36,24 +38,34 @@ export default function App() {
   };
 
   React.useEffect(() => {
-    requestLocationPermission()
+    getLocationAsync()
+    //requestLocationPermission()
     //findCoordinates()
   }, [])
 
-  const findCoordinates = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const location = JSON.stringify(position);
-
-        setLocation({ location });
-      },
-      error => Alert.alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
+  const getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    console.log('status : ', status)
+    if (status !== 'granted') {
+      
+      setLocation({
+          coords: {
+            longitude: 5.574782,
+            latitude: 50.643700
+          }
+      });
+    }
+    else
+    {
+      let locationRes = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Highest});
+      const { latitude , longitude } = locationRes.coords
+      //this.getGeocodeAsync({latitude, longitude})
+      setLocation(locationRes);
+    }
   };
 
   return (
-    <MapView style={{ flex: 1 }} region={{ latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true} />
+    <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true} />
   );
 }
 
