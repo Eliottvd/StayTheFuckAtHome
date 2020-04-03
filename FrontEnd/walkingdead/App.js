@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, SafeAreaView, PermissionsAndroid, Button } from
 import MapView from 'react-native-maps'
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import MapViewDirections from 'react-native-maps-directions';
+
+const GOOGLE_MAPS_APIKEY = 'AIzaSyB2w2xi3OHlJMsZcw-uJSR6bm1AXIMe318';
 
 export default function App() {
 
@@ -14,38 +17,12 @@ export default function App() {
   })
   const [geocode, setGeocode] = React.useState(null)
 
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "DONNE MOI TES DATAS BITCH",
-          message:
-            "pute pute pute pute ",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
-      } else {
-        console.log("location permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
   React.useEffect(() => {
     getLocationAsync()
-    //requestLocationPermission()
-    //findCoordinates()
   }, [])
 
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    console.log('status : ', status)
     if (status !== 'granted') {
       
       setLocation({
@@ -65,7 +42,19 @@ export default function App() {
   };
 
   return (
-    <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true} />
+    <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
+      <MapViewDirections
+        origin={location && location.coords}
+        destination={{
+            longitude: 5.574089,
+            latitude: 50.642484
+        }}
+        apikey={GOOGLE_MAPS_APIKEY}
+        strokeWidth={3}
+        strokeColor="hotpink"
+        mode='WALKING'
+      />
+    </MapView>
   );
 }
 
