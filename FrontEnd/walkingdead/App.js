@@ -14,7 +14,7 @@ import MapView from 'react-native-maps'
 
 export default function App() {
   return (
-    <MapView style={{ flex: 1 }} region={{ latitude: 42.882004, longitude: 74.582748, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true} />
+    <MapView style={{ flex: 1 }} region={{ latitude: 50.643700, longitude: 5.574782, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true} />
   );
 }
 
