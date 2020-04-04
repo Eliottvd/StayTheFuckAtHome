@@ -1,21 +1,27 @@
 import React, { Component, useEffect } from 'react';
 import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { default as update } from "react-addons-update";
+import {default as canUseDOM} from "can-use-dom";
+import {shouldUpdate} from 'recompose'
 
-export default function Map(props) {
+const checkPropsChange = (props, nextProps) => {
+    return false;
+}
+const Map = shouldUpdate(checkPropsChange)(props => {
     const [state, setState] = React.useState({ markers: []});
+
 
     React.useEffect(() => {
         props.setMarkers(state.markers);
     }, [state.markers]);
 
     const handleMapClick = (event) => {
+
         var { markers } = state;
         markers = update(markers, {
             $push: [
                 {
                     position: event.latLng,
-                    defaultAnimation: 2,
                     key: Date.now(),// Add a key property for: http://fb.me/react-warning-keys
                 },
             ],
@@ -71,4 +77,5 @@ export default function Map(props) {
             />
         </div>
     );
-}
+})
+export default Map;

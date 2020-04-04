@@ -14,12 +14,13 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-// import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Map from '../components/Map';
 import { Divider } from '@material-ui/core';
+import sha256 from 'crypto-js/sha256';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,10 +63,10 @@ export default function Home() {
 
     const onConnect = (e) => {
         e.preventDefault()
-        console.log({ codePostal, registreNational, result, movements })
+        console.log({ codePostal, registreNational: sha256(registreNational).toString(), result, movements })
         let fectchParameters = {
             method: 'POST',
-            body: JSON.stringify({ codePostal, registreNational, result, movements }),
+            body: JSON.stringify({ codePostal, registreNational: sha256(registreNational).toString(), result, movements }),
             headers: {
                 'Content-Type': 'application/json',
                 
