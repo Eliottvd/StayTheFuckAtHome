@@ -18,6 +18,7 @@ export default function App() {
   const [geocode, setGeocode] = React.useState(null)
 
   React.useEffect(() => {
+    console.log("cc Clem");
     getLocationAsync()
   }, [])
 
