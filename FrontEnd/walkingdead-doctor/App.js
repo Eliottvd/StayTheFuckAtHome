@@ -2,9 +2,36 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import Formsy from 'formsy-react-native';
 import TextField from './components/TextField';
+import { Box } from '@material-ui/core';
+import { NavigationContainer } from '@react-navigation/native';
+
+function DetailsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Details Screen</Text>
+      <Button
+        title="Go to Details... again"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
+}
+
+function onPressButton(e) {
+  alert('coucou');
+}
+
 
 export default class App extends React.Component {
   handleSubmit = (data) => {
+    let fectchParameters = {
+      method: 'GET',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    //fetch("https://walkinddeadapi.azurewebsites.net", fectchParameters);
     alert(`Data is:\n${JSON.stringify(data, null, 2)}`);
   }
 
@@ -31,11 +58,21 @@ export default class App extends React.Component {
               "isDefaultRequiredValue": "Champs requis."
             }}
             required />
-          
+          <View style={styles.buttonWrapper2}>
+            <Button title="Coucou" onPress={(e) => onPressButton(e)}></Button>
+
+            <Button
+              title="Go to Details"
+              onPress={() => navigation.navigate('Details')}
+            />
+          </View>
+
           <View style={styles.buttonWrapper}>
             <Formsy.Button style={styles.button} title="Reset" type="reset" />
             <Formsy.Button style={styles.button} title="Submit" type="submit" />
           </View>
+
+
         </Formsy.Form>
       </View>
     );
@@ -50,6 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee'
   },
   header: {
+    marginTop: 2,
     fontSize: 24,
     paddingBottom: 10,
     fontWeight: 'bold',
@@ -62,10 +100,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonWrapper: {
+    marginTop: 2,
     flexDirection: 'row',
     justifyContent: 'center',
   },
   button: {
-    width: 100
-  }
+    width: 100,
+    marginLeft: 1,
+    marginRight: 1,
+  },
+  buttonWrapper2: {
+    margin: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });
