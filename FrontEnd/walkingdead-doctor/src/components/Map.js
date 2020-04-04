@@ -9,8 +9,8 @@ const checkPropsChange = (props, nextProps) => {
 }
 const Map = shouldUpdate(checkPropsChange)(props => {
     const [state, setState] = React.useState({ markers: []});
-
-
+    const laDate = React.useRef(props.date);
+    
     React.useEffect(() => {
         props.setMarkers(state.markers);
     }, [state.markers]);
@@ -18,9 +18,11 @@ const Map = shouldUpdate(checkPropsChange)(props => {
     const handleMapClick = (event) => {
 
         var { markers } = state;
+        
         markers = update(markers, {
             $push: [
                 {
+                    date: props.laDate.current,
                     position: event.latLng,
                     key: Date.now(),// Add a key property for: http://fb.me/react-warning-keys
                 },

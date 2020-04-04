@@ -18,9 +18,15 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Map from '../components/Map';
 import { Divider } from '@material-ui/core';
 import sha256 from 'crypto-js/sha256';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Moment from 'moment';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import { default as update } from "react-addons-update";
+import {default as canUseDOM} from "can-use-dom";
+import {shouldUpdate} from 'recompose'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,6 +66,8 @@ export default function Home() {
     const [registreNational, setRegistreNational] = React.useState("");
     const [result, setResult] = React.useState("Infectious");
     const [movements, setMovements] = React.useState([]);
+    const [date, setDate] = React.useState(new Date());
+    const laDate = React.useRef(date);
 
     const onConnect = (e) => {
         e.preventDefault()
@@ -69,7 +77,7 @@ export default function Home() {
             body: JSON.stringify({ codePostal, registreNational: sha256(registreNational).toString(), result, movements }),
             headers: {
                 'Content-Type': 'application/json',
-                
+
             }
         }
         fetch("https://cors-anywhere.herokuapp.com/http://walkinddeadapi.azurewebsites.net/walkingdead/addtest", fectchParameters);
@@ -77,10 +85,18 @@ export default function Home() {
 
     const setMyMarkers = (markers) => {
         let array = [];
+        Moment.locale('zh-tw');
         markers.forEach(element => {
-            array.push({ longitude: element.position.lng(), latitude: element.position.lat()})
+            array.push({ longitude: element.position.lng(), latitude: element.position.lat(), date: Moment(element.date).format('YYYY-MM-DD') })
         });
+
         setMovements(array);
+    }
+
+    const handleChangeDate = (d) => {
+        setDate(d);
+        console.log(d);
+
     }
 
     const onChange = (e) => {
@@ -94,11 +110,81 @@ export default function Home() {
         }
     }
 
+    const [state, setState] = React.useState({ markers: [] });
+    // const laDate = React.useRef(props.date);
+
+    // React.useEffect(() => {
+    //     props.setMarkers(state.markers);
+    // }, [state.markers]);
+
+    const handleMapClick = (event) => {
+
+        var { markers } = state;
+
+        markers = update(markers, {
+            $push: [
+                {
+                    date: date,
+                    position: event.latLng,
+                    key: Date.now(),// Add a key property for: http://fb.me/react-warning-keys
+                },
+            ],
+        });
+        setState({ markers });
+        setMyMarkers(markers);
+
+        // if (3 === markers.length) {
+        //     props.toast(
+        //         "Right click on the marker to remove it",
+        //         "Also check the code!"
+        //     );
+        // }
+    }
+
+    const handleMarkerRightclick = (index, event) => {
+        /*
+         * All you modify is data, and the view is driven by data.
+         * This is so called data-driven-development. (And yes, it's now in
+         * web front end and even with google maps API.)
+         */
+        var { markers } = state;
+        markers = update(markers, {
+            $splice: [
+                [index, 1]
+            ],
+        });
+        setState({ markers });
+    }
+
+    const GoogleMapExample = withGoogleMap(props => (
+        <GoogleMap
+            defaultCenter={{ lat: 40.756795, lng: -73.954298 }}
+            defaultZoom={13}
+            onClick={handleMapClick}>
+            >
+            {state.markers && state.markers.map((marker, index) => {
+                return (
+                    <Marker
+                        {...marker}
+                        onRightclick={handleMarkerRightclick.bind(this, index)} />
+                );
+            })}
+        </GoogleMap>
+    ));
+
     return (
         <Grid container spacing={1} component="main" className={classes.root}>
             <CssBaseline />
             <Grid item xs={12} sm={4} md={7}>
-                <Map setMarkers={setMyMarkers} />
+                <div>
+                    <GoogleMapExample
+                        containerElement={<div style={{
+                            width: '100%',
+                            height: '100vh'
+                        }} />}
+                        mapElement={<div style={{ height: `100%` }} />}
+                    />
+                </div>
             </Grid>
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6}>
                 <div className={classes.paper}>
@@ -147,6 +233,11 @@ export default function Home() {
                         >
                             Ajouter un zombie
                     </Button>
+                        <DatePicker
+                            selected={date}
+                            onChange={handleChangeDate}
+                            dateFormat="dd/MM/yyyy"
+                        />
                     </form>
                 </div>
             </Grid>
