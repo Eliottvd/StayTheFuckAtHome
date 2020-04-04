@@ -43,7 +43,7 @@ namespace WalkingDead.Controllers
         [Route("getInfectedMovements")]
         public IActionResult getInfectedMovements()
         {
-            List<Movement> moves = (List<Movement>)dBManager.getInfectedMovement();
+            List<Movement> moves = dBManager.getInfectedMovement().ToList();
 
             return new JsonResult(moves);
         }

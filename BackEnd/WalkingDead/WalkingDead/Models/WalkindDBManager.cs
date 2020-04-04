@@ -33,7 +33,7 @@ namespace WalkingDead.Models
         public IEnumerable<User> getCurrentlyInfectedUsers()
         {
             Func<User, bool> isInfected = new Func<User, bool>(isUserInfected);
-            return Context.Users.Include(u => u.Tests).Where(u => isInfected(u));
+            return Context.Users.Include(u => u.Tests).Where(u => isUserInfected(u));
         }
 
         public bool isUserInfected(User user)
@@ -50,7 +50,7 @@ namespace WalkingDead.Models
                     lastTest = t;
             }
 
-            if (lastTest.Result == "INFECTIOUS")
+            if (lastTest.Result == "Infectious")
                 return true;
             return false;
         }
@@ -72,6 +72,7 @@ namespace WalkingDead.Models
                 Context.Add<User>(user);
 
             Context.Add<Test>(test);
+            moves.ForEach(move => Console.WriteLine(move.Latitude));
             moves.ForEach(move => Context.Add<Movement>(move));
             Context.SaveChanges();
         }
