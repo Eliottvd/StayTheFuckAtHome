@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WalkingDead.Models;
 
 namespace WalkingDead.Controllers
 {
@@ -14,28 +15,18 @@ namespace WalkingDead.Controllers
     {
 
         private readonly ILogger<WalkingDeadController> _logger;
+        public WalkindDBManager dBManager { get; set; }
 
         public WalkingDeadController(ILogger<WalkingDeadController> logger)
         {
             _logger = logger;
+            dBManager = new WalkindDBManager();
         }
 
         [HttpGet]
         [Route("test")]
         public IActionResult test()
         {
-            return Ok("coucou");
-        }
-
-        [HttpPost]
-        [Route("addUserInfo/{username}")]
-        public IActionResult addUserInfo(string username)
-        {
-            using(StreamReader reader = new StreamReader(Request.Body))
-            {
-                string json = reader.ReadToEndAsync().GetAwaiter().GetResult();
-            }
-
             return Ok("coucou");
         }
 
@@ -46,6 +37,32 @@ namespace WalkingDead.Controllers
             DateTime ret = DateTime.Now;
 
             return new JsonResult(ret);
+        }
+
+        [HttpGet]
+        [Route("getInfectedMovements")]
+        public IActionResult getInfectedMovements()
+        {
+            List<Movement> moves = dBManager.getInfectedMovement();
+
+            List<MovementDTO> movess = new List<MovementDTO>();
+            foreach(Movement m in moves)
+            {
+                movess.Add(new MovementDTO(m.Date, m.Longitude, m.Latitude));
+            }
+
+            return new JsonResult(movess);
+        }
+
+        [HttpPost]
+        [Route("addTest")]
+        public IActionResult AddTest(NewTestDTO request)
+        {
+            Console.WriteLine(request);
+
+            dBManager.addTest(request);
+
+            return Ok();
         }
     }
 }
