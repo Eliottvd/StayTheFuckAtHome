@@ -40,6 +40,15 @@ namespace WalkingDead
 
             app.UseAuthorization();
 
+            app.UseCors(x => x
+                .WithOrigins(
+                "http://localhost:3000",
+                "http://localhost:5001")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
