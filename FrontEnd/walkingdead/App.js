@@ -38,9 +38,13 @@ export default function App() {
   const [geocode, setGeocode] = React.useState(null)
 
   React.useEffect(() => {
+    console.log("cc Clem");
     getLocationAsync()
     getRoute()
   }, [])
+
+  const getInfectedMovements = async () => {
+  }
 
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);

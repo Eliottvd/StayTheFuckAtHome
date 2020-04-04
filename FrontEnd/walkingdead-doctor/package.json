@@ -1,27 +1,38 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
-  },
+  "name": "walkingdead-doctor",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@cawfree/react-native-heat-map": "0.0.2",
     "@material-ui/core": "^4.9.8",
-    "expo": "~37.0.3",
-    "formsy-react-native": "0.0.4",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
-    "react-native-gesture-handler": "^1.6.1",
-    "react-native-web": "~0.11.7",
-    "react-navigation": "^4.3.7"
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "react": "^16.13.1",
+    "react-addons-update": "^15.6.2",
+    "react-dom": "^16.13.1",
+    "react-google-maps": "^9.4.5",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1"
   },
-  "devDependencies": {
-    "babel-preset-expo": "~8.1.0",
-    "@babel/core": "^7.8.6"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "private": true
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
