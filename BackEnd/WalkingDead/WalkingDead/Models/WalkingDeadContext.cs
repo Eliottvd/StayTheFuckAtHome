@@ -21,7 +21,7 @@ namespace WalkingDead.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=tcp:walkingdeadserver.database.windows.net,1433;Initial Catalog=WalkingDeads;Persist Security Info=False;User ID=walkingdead;Password={Lenl3f8L};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=tcp:walkingdeadserver.database.windows.net,1433;Initial Catalog=WalkingDeads;Persist Security Info=False;User ID=walkingdead;Password=Lenl3f8L;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
     }
