@@ -43,9 +43,15 @@ namespace WalkingDead.Controllers
         [Route("getInfectedMovements")]
         public IActionResult getInfectedMovements()
         {
-            List<Movement> moves = dBManager.getInfectedMovement().ToList();
+            List<Movement> moves = dBManager.getInfectedMovement();
 
-            return new JsonResult(moves);
+            List<MovementDTO> movess = new List<MovementDTO>();
+            foreach(Movement m in moves)
+            {
+                movess.Add(new MovementDTO(m.Date, m.Longitude, m.Latitude));
+            }
+
+            return new JsonResult(movess);
         }
 
         [HttpPost]

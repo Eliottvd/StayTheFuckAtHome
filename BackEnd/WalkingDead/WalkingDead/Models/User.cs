@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace WalkingDead.Models
 {
+    [Table("Users")]
     public class User
     {
         public string CodePostal { get; set; }
@@ -17,19 +18,21 @@ namespace WalkingDead.Models
         public virtual ICollection<Test> Tests { get; set; }
         public virtual ICollection<Movement> Movements { get; set; }
 
-        public User(string codePostal, string registreNational, ICollection<Test> tests, ICollection<Movement> movements)
+        public User(string codePostal, string registreNational, ICollection<Test> tests)
         {
             CodePostal = codePostal;
             RegistreNational = registreNational;
             Tests = tests;
-            Movements = movements;
+            //Movements = movements;
         }
         public User(string codePostal, string registreNational)
         {
             CodePostal = codePostal;
             RegistreNational = registreNational;
             Tests = new List<Test>();
-            Movements = new List<Movement>();
+            //Movements = new List<Movement>();
         }
+
+        public User() { }
     }
 }
