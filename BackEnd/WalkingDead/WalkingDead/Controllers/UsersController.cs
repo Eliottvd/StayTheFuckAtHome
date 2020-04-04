@@ -11,48 +11,48 @@ namespace WalkingDead.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly WalkingDeadContext _context;
 
-        public TestsController(WalkingDeadContext context)
+        public UsersController(WalkingDeadContext context)
         {
             _context = context;
         }
 
-        // GET: api/Tests
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Test>>> GetWalkingDeadItems()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Tests.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Tests/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Test>> GetTest(long id)
+        public async Task<ActionResult<User>> GetUser(long id)
         {
-            var test = await _context.Tests.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
-            if (test == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return test;
+            return user;
         }
 
-        // PUT: api/Tests/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTest(long id, Test test)
+        public async Task<IActionResult> PutUser(long id, User user)
         {
-            if (id != test.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(test).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace WalkingDead.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TestExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -73,38 +73,38 @@ namespace WalkingDead.Controllers
             return NoContent();
         }
 
-        // POST: api/Tests
+        // POST: api/Users
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Test>> PostTest(Test test)
+        public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Tests.Add(test);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetTest", new { id = test.Id }, test);
-            return CreatedAtAction(nameof(GetTest), new { id = test.Id }, test);
+            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        // DELETE: api/Tests/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Test>> DeleteTest(long id)
+        public async Task<ActionResult<User>> DeleteUser(long id)
         {
-            var test = await _context.Tests.FindAsync(id);
-            if (test == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Tests.Remove(test);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            return test;
+            return user;
         }
 
-        private bool TestExists(long id)
+        private bool UserExists(long id)
         {
-            return _context.Tests.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

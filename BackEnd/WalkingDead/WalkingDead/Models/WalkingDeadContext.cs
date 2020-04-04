@@ -9,8 +9,10 @@ namespace WalkingDead.Models
         {
         }
 
-        public DbSet<Test> WalkingDeadItems { get; set; }
+        public DbSet<Test> Tests { get; set; }
 
         public DbSet<Movement> Movements { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }
