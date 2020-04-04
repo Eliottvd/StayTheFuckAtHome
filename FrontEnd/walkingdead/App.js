@@ -5,6 +5,8 @@ import { Marker, Polyline } from 'react-native-maps'
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapViewDirections from 'react-native-maps-directions';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Card } from 'react-native-material-ui';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyB2w2xi3OHlJMsZcw-uJSR6bm1AXIMe318';
 
@@ -45,18 +47,17 @@ export default function App() {
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
-      
+
       setLocation({
-          coords: {
-            longitude: 5.574782,
-            latitude: 50.643700
-          }
+        coords: {
+          longitude: 5.574782,
+          latitude: 50.643700
+        }
       });
     }
-    else
-    {
-      let locationRes = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Highest});
-      const { latitude , longitude } = locationRes.coords
+    else {
+      let locationRes = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+      const { latitude, longitude } = locationRes.coords
       //this.getGeocodeAsync({latitude, longitude})
       setLocation(locationRes)
       setDeparture(locationRes)
@@ -69,7 +70,7 @@ export default function App() {
     let to_lat = parseFloat(arrival.coords.latitude)
     let to_long = parseFloat(arrival.coords.longitude)
 
-    const APIurl =  `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=sHXA2BvFa3XvnLgpQjzX&app_code=N0w0RZuUd-27zzLTQou1oQ&waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&mode=fastest;bicycle;traffic:disabled&legAttributes=shape`
+    const APIurl = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=sHXA2BvFa3XvnLgpQjzX&app_code=N0w0RZuUd-27zzLTQou1oQ&waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&mode=fastest;bicycle;traffic:disabled&legAttributes=shape`
     const result = await fetch(APIurl)
     const resultJson = await result.json()
 
@@ -93,32 +94,47 @@ export default function App() {
   }
 
   const gps = () => {
-    if(!isLoading)
-    {
+    if (!isLoading) {
       console.log('departure: ', departure)
       console.log('arrival : ', arrival)
       console.log('polylines : ', routeForMap)
-      return <View>
-        <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true}/>
-        <Marker coordinate={{latitude: departure.coords.latitude, longitude: departure.coords.longitude}} title="StartingLocation"/>
-        <Marker coordinate={{latitude: arrival.coords.latitude, longitude: arrival.coords.longitude}} title="Finishlocation"/>
-      </View>
+      return (
+        <View>
+          <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true} />
+          <Marker coordinate={{ latitude: departure.coords.latitude, longitude: departure.coords.longitude }} title="StartingLocation" />
+          <Marker coordinate={{ latitude: arrival.coords.latitude, longitude: arrival.coords.longitude }} title="Finishlocation" />
+        </View>)
     }
   }
 
   return (
-    <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
-      {gps()}
-        {!isLoading &&
-          <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true}/>
-        }
-        {!isLoading &&
-          <Marker coordinate={{latitude: departure.coords.latitude, longitude: departure.coords.longitude}} title="StartingLocation"/>
-        }
-        {!isLoading &&
-          <Marker coordinate={{latitude: arrival.coords.latitude, longitude: arrival.coords.longitude}} title="Finishlocation"/>
-        }
-    </MapView>
+    <View style={{ height: "100%" }}>
+      <View>
+        <Text></Text>
+        <Text></Text>
+      </View>
+      <GooglePlacesAutocomplete
+        placeholder='Search'
+        minLength={1}
+        autoFocus={true}
+        returnKeyType={'search'}
+        listViewDisplayed={false}
+        fetchDetails={true}
+        onPress={(data, details = null) => {
+          notifyChange(details.geometry.location);
+        }}
+        query={{
+          key: GOOGLE_MAPS_APIKEY,
+          language: 'en'
+        }}
+        nearbyPlacesAPI='GooglePlacesSearch'
+        debounce={200}
+      />
+
+      <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
+        {gps()}
+      </MapView>
+    </View>
   );
 }
 
