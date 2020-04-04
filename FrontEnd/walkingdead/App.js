@@ -18,6 +18,7 @@ export default function App() {
       latitude: 50.643700
     }
   })
+  
 
   const [arrival, setArrival] = React.useState({
     coords: {
@@ -36,13 +37,24 @@ export default function App() {
   const [routeForMap, setRouteForMap] = React.useState([])
   const [summary, setSummary] = React.useState(null)
   const [isLoading, setIsLoading] = React.useState(true)
-
+  const [display, setDisplay] = React.useState(false);
+  const [mapHeight, setMapHeight] = React.useState("75%");
   const [geocode, setGeocode] = React.useState(null)
 
   React.useEffect(() => {
     getLocationAsync()
-    getRoute()
   }, [])
+
+  React.useEffect(() => {
+    const foo = async () => {
+      await getRoute();
+    
+      setDisplay(true)
+    }
+    foo()
+    
+  }, [arrival, departure])
+
 
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -65,6 +77,7 @@ export default function App() {
   }
 
   const getRoute = async () => {
+    setDisplay(false);
     let from_lat = parseFloat(departure.coords.latitude)
     let from_long = parseFloat(departure.coords.longitude)
     let to_lat = parseFloat(arrival.coords.latitude)
@@ -90,18 +103,24 @@ export default function App() {
     setIsLoading(false)
   }
 
-  const notifyChangeDeparture = (coords) => {
+  const notifyChangeDeparture = async (coords) => {
+    setDisplay(false);
     setDeparture({
-      coords:{
+      coords: {
         latitude: coords.lat,
         longitude: coords.lng
       }
     })
   }
 
-  const notifyChangeArrival = (coords) => {
+  const onFocus= () => {
+    setMapHeight("0%");
+  }
+
+  const notifyChangeArrival = async (coords) => {
+    setDisplay(false);
     setArrival({
-      coords:{
+      coords: {
         latitude: coords.lat,
         longitude: coords.lng
       }
@@ -114,7 +133,9 @@ export default function App() {
         <Text></Text>
         <Text></Text>
       </View>
+      <View style={{ height: "25%" }}>
         <GooglePlacesAutocomplete
+          style={styles.locationAutocompleteStyle}
           placeholder='Departure'
           minLength={2}
           autoFocus={false}
@@ -128,7 +149,7 @@ export default function App() {
           }}
           query={{
             key: GOOGLE_MAPS_APIKEY,
-            language: 'en'
+            language: 'fr'
           }}
           styles={{
             description: {
@@ -160,6 +181,7 @@ export default function App() {
           onPress={(data, details = null) => {
             notifyChangeArrival(details.geometry.location);
           }}
+          onFocus={() => onFocus()}
           query={{
             key: GOOGLE_MAPS_APIKEY,
             language: 'en'
@@ -182,27 +204,55 @@ export default function App() {
           filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
           debounce={200}
         />
-
-      <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
-        <View>
-          {isLoading ? null : (
-            <View>
-              <Marker coordinate={{ latitude: departure.coords.latitude, longitude: departure.coords.longitude }} title="StartingLocation" />
-              <Marker coordinate={{ latitude: arrival.coords.latitude, longitude: arrival.coords.longitude }} title="Finishlocation" />
-              <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true} />
-            </View>
-          )}
-        </View>
-      </MapView>
+      </View>
+      <View style={{ height: mapHeight }} >
+        <MapView style={{ flex: 1 }} region={{ latitude: departure && departure.coords && departure.coords.latitude, longitude: departure && departure.coords && departure.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
+          <View>
+            {isLoading ? null : (
+              <View>
+                <Marker coordinate={{ latitude: departure.coords.latitude, longitude: departure.coords.longitude }} title="StartingLocation" />
+                <Marker coordinate={{ latitude: arrival.coords.latitude, longitude: arrival.coords.longitude }} title="Finishlocation" />
+                {display &&
+                  <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true} />
+                }
+              </View>
+            )}
+          </View>
+        </MapView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+  containerStyle: {
+    flexGrow: 1,
+    display: 'flex',
     justifyContent: 'center',
+    alignItems: 'center',
   },
+  inputStyle: {
+    marginTop: 20,
+    marginBottom: 20,
+    height: 35,
+    paddingLeft: 5,
+    paddingRight: 5,
+    fontSize: 22,
+    lineHeight: 35,
+    width: '95%',
+    borderColor: 'gray',
+    borderWidth: 1,
+  },
+  buttonStyle: {
+    height: 70,
+    width: '100%',
+    backgroundColor: '#C60000',
+    alignItems: 'center',
+    alignSelf: 'flex-end'
+  },
+  buttonTextStyle: {
+    fontSize: 25,
+    color: 'white',
+    lineHeight: 50
+  }
 });
