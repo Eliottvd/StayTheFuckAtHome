@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, PermissionsAndroid, Button } from "react-native";
-import MapView from 'react-native-maps'
+import MapView from 'expo'
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapViewDirections from 'react-native-maps-directions';
@@ -21,6 +21,9 @@ export default function App() {
     getLocationAsync()
   }, [])
 
+  const getInfectedMovements = async () => {
+  }
+
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
@@ -40,6 +43,23 @@ export default function App() {
       setLocation(locationRes);
     }
   };
+
+  const getRoute = async () => {
+    let from_lat = parseFloat(location.latitude)
+    let from_long = parseFloat(this.state.startingLocation.longitude)
+    let to_lat = parseFloat(this.state.finishLocation.latitude)
+    let to_long = parseFloat(this.state.finishLocation.longitude)
+
+    let route_coordinates = []
+    
+    const APIurl = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=sHXA2BvFa3XvnLgpQjzX&app_code=N0w0RZuUd-27zzLTQou1oQ
+      &waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&mode=fastest;bicycle;traffic:disabled&legAttributes=shape`
+
+    result = await fetch(APIurl);
+    jsonRes = await result.json();
+
+
+  }
 
   return (
     <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
