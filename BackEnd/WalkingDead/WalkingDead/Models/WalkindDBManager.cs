@@ -57,19 +57,18 @@ namespace WalkingDead.Models
 
         public void addTest(string registreNational, string codePostal, string result, List<Movement> movements)
         {
-            User user = new User(codePostal, registreNational);
-            Test test = new Test(result, DateTime.Now, registreNational);
+            var user = Context.Users.Find(registreNational);
+            if (user == null)
+            {
+                user = new User(codePostal, registreNational);
+                Context.Users.Add(user);
+            }
+
+            Test test = new Test(result, DateTime.Now, user);
 
             List<Movement> moves = new List<Movement>();
 
             movements.ForEach(move => moves.Add(new Movement(registreNational, move.Date, move.Longitude, move.Latitude)));
-
-            if (Context.Users.Find(registreNational) != null) //New user
-            {
-                Context.Users.Attach(user);
-            }
-            else
-                Context.Add<User>(user);
 
             Context.Add<Test>(test);
             moves.ForEach(move => Console.WriteLine(move.Latitude));

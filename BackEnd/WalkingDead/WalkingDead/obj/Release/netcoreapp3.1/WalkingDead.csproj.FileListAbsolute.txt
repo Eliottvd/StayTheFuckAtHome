@@ -21,7 +21,6 @@ L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\net
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
-L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.InMemory.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Release\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll

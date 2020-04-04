@@ -31,5 +31,7 @@ namespace WalkingDead.Models
             Tests = new List<Test>();
             Movements = new List<Movement>();
         }
+
+        public User() { }
     }
 }
