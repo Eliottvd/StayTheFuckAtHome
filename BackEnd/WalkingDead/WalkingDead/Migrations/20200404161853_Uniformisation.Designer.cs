@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WalkingDead.Models;
 
 namespace WalkingDead.Migrations
 {
     [DbContext(typeof(WalkingDeadContext))]
-    partial class WalkingDeadContextModelSnapshot : ModelSnapshot
+    [Migration("20200404161853_Uniformisation")]
+    partial class Uniformisation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

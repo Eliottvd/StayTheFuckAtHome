@@ -8,7 +8,6 @@ namespace WalkingDead.Models
     public class Movement
     {
         public long Id { get; set; }
-        public string IdUser { get; set; }
         public DateTime Date { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
@@ -19,26 +18,31 @@ namespace WalkingDead.Models
 
         }
 
-        public Movement(long id, string idUser, DateTime date, double longitude, double latitude, User user)
+        public Movement(long id, DateTime date, double longitude, double latitude, User user)
         {
             Id = id;
-            IdUser = idUser;
             Date = date;
             Longitude = longitude;
             Latitude = latitude;
             User = user;
         }
-        public Movement(string idUser, DateTime date, double longitude, double latitude, User user)
+        public Movement(DateTime date, double longitude, double latitude, User user)
         {
-            IdUser = idUser;
             Date = date;
             Longitude = longitude;
             Latitude = latitude;
             User = user;
         }
-        public Movement(string idUser, DateTime date, double longitude, double latitude)
+        public Movement(DateTime date, double longitude, double latitude)
         {
-            IdUser = idUser;
+            Date = date;
+            Longitude = longitude;
+            Latitude = latitude;
+        }
+
+        public Movement(User user, DateTime date, double longitude, double latitude)
+        {
+            User = user;
             Date = date;
             Longitude = longitude;
             Latitude = latitude;

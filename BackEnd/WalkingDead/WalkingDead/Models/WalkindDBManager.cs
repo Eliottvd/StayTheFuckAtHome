@@ -27,7 +27,7 @@ namespace WalkingDead.Models
 
             IEnumerable<User> infecteds = getCurrentlyInfectedUsers();
 
-            return Context.Movements.Include(m => m.User).Where(m => infecteds.Contains(m.User)); //TODO : date<5
+            return Context.Movements.Include(m => m.User).Where(m => infecteds.Contains(m.User) && (DateTime.Now - m.Date).Days <=5); //TODO : date<5
         }
 
         public IEnumerable<User> getCurrentlyInfectedUsers()
@@ -68,7 +68,7 @@ namespace WalkingDead.Models
 
             List<Movement> moves = new List<Movement>();
 
-            movements.ForEach(move => moves.Add(new Movement(registreNational, move.Date, move.Longitude, move.Latitude)));
+            movements.ForEach(move => moves.Add(new Movement(user, move.Date, move.Longitude, move.Latitude)));
 
             Context.Add<Test>(test);
             moves.ForEach(move => Console.WriteLine(move.Latitude));
