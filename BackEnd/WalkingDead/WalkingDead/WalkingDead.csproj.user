@@ -12,5 +12,9 @@
     <WebStackScaffolding_DbContextTypeFullName>WalkingDead.Models.WalkingDeadContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <NameOfLastUsedPublishProfile>WalkindDeadAPI - Web Deploy</NameOfLastUsedPublishProfile>
+    <ActiveDebugProfile>WalkingDead</ActiveDebugProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

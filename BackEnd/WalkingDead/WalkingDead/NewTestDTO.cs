@@ -11,20 +11,25 @@ namespace WalkingDead
         public string registreNational { get; set; }
         public string codePostal { get; set; }
         public string Result { get; set; }
-        public List<coords> movements { get; set; }
+        public List<Models.Movement> movements { get; set; }
 
-        public NewTestDTO(string registreNational, string codePostal, string result, List<coords> movements)
+        public NewTestDTO()
         {
-            this.registreNational = registreNational;
-            this.codePostal = codePostal;
-            Result = result;
-            this.movements = movements;
+
         }
+
+        //public NewTestDTO(string registreNational, string codePostal, string result, List<coords> movements)
+        //{
+        //    this.registreNational = registreNational;
+        //    this.codePostal = codePostal;
+        //    Result = result;
+        //    this.movements = movements;
+        //}
 
         public override string ToString()
         {
             return $"NOUVEAU TEST// registr national : {registreNational} / code postal : {codePostal}" +
-                $"/ resultat : {Result} / mouvement 1 : lat{movements[0].latitude} lon{movements[0].longitude} {movements[0].date}" +
+                $"/ resultat : {Result} / mouvement 1 : lat{movements[0].Latitude} lon{movements[0].Longitude} {movements[0].Date}" +
                 $"/ nbr de mouvement : {movements.Count}";
         }
     }

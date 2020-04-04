@@ -55,14 +55,14 @@ namespace WalkingDead.Models
             return false;
         }
 
-        public void addTest(string registreNational, string codePostal, string result, List<coords> movements)
+        public void addTest(string registreNational, string codePostal, string result, List<Movement> movements)
         {
             User user = new User(codePostal, registreNational);
             Test test = new Test(result, DateTime.Now, registreNational);
 
             List<Movement> moves = new List<Movement>();
 
-            movements.ForEach(move => moves.Add(new Movement(registreNational, move.date, move.longitude, move.latitude)));
+            movements.ForEach(move => moves.Add(new Movement(registreNational, move.Date, move.Longitude, move.Latitude)));
 
             if (Context.Users.Find(registreNational) != null) //New user
             {

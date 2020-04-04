@@ -14,6 +14,11 @@ namespace WalkingDead.Models
         public double Latitude { get; set; }
         public User User { get; set; }
 
+        public Movement()
+        {
+
+        }
+
         public Movement(long id, string idUser, DateTime date, double longitude, double latitude, User user)
         {
             Id = id;
