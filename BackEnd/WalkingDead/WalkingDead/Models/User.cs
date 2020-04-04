@@ -15,22 +15,22 @@ namespace WalkingDead.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string RegistreNational { get; set; }
-        public ICollection<Test> Tests { get; set; }
-        public ICollection<Movement> Movements { get; set; }
+        public virtual ICollection<Test> Tests { get; set; }
+        public virtual ICollection<Movement> Movements { get; set; }
 
-        public User(string codePostal, string registreNational, ICollection<Test> tests, ICollection<Movement> movements)
+        public User(string codePostal, string registreNational, ICollection<Test> tests)
         {
             CodePostal = codePostal;
             RegistreNational = registreNational;
             Tests = tests;
-            Movements = movements;
+            //Movements = movements;
         }
         public User(string codePostal, string registreNational)
         {
             CodePostal = codePostal;
             RegistreNational = registreNational;
             Tests = new List<Test>();
-            Movements = new List<Movement>();
+            //Movements = new List<Movement>();
         }
 
         public User() { }

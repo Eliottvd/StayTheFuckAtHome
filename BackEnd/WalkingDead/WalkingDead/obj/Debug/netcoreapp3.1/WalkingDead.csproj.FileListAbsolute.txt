@@ -176,7 +176,6 @@ L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netco
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
-L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.InMemory.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
 L:\WalkingDead\StayTheFuckAtHome\BackEnd\WalkingDead\WalkingDead\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll

@@ -21,13 +21,23 @@ namespace WalkingDead.Models
             Context = new WalkingDeadContext();
         }
 
-        public IEnumerable<Movement> getInfectedMovement()
+        public List<Movement> getInfectedMovement()
         {
+            List<Movement> result = new List<Movement>();
             DateTime time = DateTime.Now;
 
             IEnumerable<User> infecteds = getCurrentlyInfectedUsers().GetAwaiter().GetResult();
 
-            return Context.Movements.Include(m => m.User).Where(m => infecteds.Contains(m.User) && (DateTime.Now - m.Date).Days <=5); //TODO : date<5
+            var movements = Context.Movements.Include(m => m.User);
+
+            foreach(Movement m in movements)
+            {
+                if (infecteds.Contains(m.User) && (DateTime.Now - m.Date).Days <= 5)
+                    result.Add(m);
+            }
+            return result;
+
+            //return Context.Movements.Include(m => m.User).Where(m => infecteds.Contains(m.User) && (DateTime.Now - m.Date).Days <=5).AsEnumerable(); //TODO : date<5
         }
 
         public async Task<IEnumerable<User>> getCurrentlyInfectedUsers()
@@ -61,6 +71,9 @@ namespace WalkingDead.Models
             user.Tests.ToList().ForEach(test => tests.Add(test));
 
             var count = tests.Count;
+
+            if (count == 0)
+                return false;
 
             Test lastTest = tests[0];
 
