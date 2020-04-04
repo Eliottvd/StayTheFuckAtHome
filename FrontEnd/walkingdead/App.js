@@ -39,6 +39,8 @@ export default function App() {
 
   const [geocode, setGeocode] = React.useState(null)
 
+  var listOfPoints = [];
+
   React.useEffect(() => {
     getLocationAsync()
     getRoute()
@@ -93,19 +95,33 @@ export default function App() {
     setIsLoading(false)
   }
 
-  const gps = () => {
-    if (!isLoading) {
-      console.log('departure: ', departure)
-      console.log('arrival : ', arrival)
-      console.log('polylines : ', routeForMap)
-      return (
-        <View>
-          <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true} />
-          <Marker coordinate={{ latitude: departure.coords.latitude, longitude: departure.coords.longitude }} title="StartingLocation" />
-          <Marker coordinate={{ latitude: arrival.coords.latitude, longitude: arrival.coords.longitude }} title="Finishlocation" />
-        </View>)
-    }
+  // const gps = () => {
+  //   if (!isLoading) {
+  //     console.log('departure: ', departure)
+  //     console.log('arrival : ', arrival)
+  //     console.log('polylines : ', routeForMap)
+  //     return (
+  //         <View>
+  //           <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true} />
+  //           <Marker coordinate={{ latitude: departure.coords.latitude, longitude: departure.coords.longitude }} title="StartingLocation" />
+  //           <Marker coordinate={{ latitude: arrival.coords.latitude, longitude: arrival.coords.longitude }} title="Finishlocation" />
+  //           {listOfPoints && listOfPoints.map((point) => (
+  //             <Marker coordinate={{ latitude: point.lat, longitude: point.lng }} title="Finishlocation" />
+  //           ))}
+  //         </View>)
+  //   }
+  // }
+
+  const notifyChange = (coords) => {
+    listOfPoints.push(coords);
+    console.log('-------------------------------------------------')
+    console.log(listOfPoints); 
   }
+
+  React.useEffect(() => {
+    console.log('-------------------------------------------------')
+    console.log(listOfPoints); 
+  }, [listOfPoints])
 
   return (
     <View style={{ height: "100%" }}>
@@ -115,24 +131,57 @@ export default function App() {
       </View>
       <GooglePlacesAutocomplete
         placeholder='Search'
-        minLength={1}
-        autoFocus={true}
+        minLength={2}
+        autoFocus={false}
         returnKeyType={'search'}
-        listViewDisplayed={false}
+        keyboardAppearance={'light'}
+        listViewDisplayed='auto'
         fetchDetails={true}
+        renderDescription={row => row.description}
         onPress={(data, details = null) => {
+          console.log('------------------');
+          console.log(data);
+          console.log('------------------');
+          console.log(details);
           notifyChange(details.geometry.location);
         }}
         query={{
           key: GOOGLE_MAPS_APIKEY,
           language: 'en'
         }}
+        styles={{
+          description: {
+            fontWeight: 'bold'
+          },
+          predefinedPlacesDescription: {
+            color: '#1faadb'
+          }
+        }}
         nearbyPlacesAPI='GooglePlacesSearch'
+        GooglePlacesSearchQuery={{
+          rankby: 'distance'
+        }}
+        // GooglePlacesDetailsQuery={{
+        //   fields: 'formatted_address'
+        // }}
+        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
         debounce={200}
       />
 
       <MapView style={{ flex: 1 }} region={{ latitude: location && location.coords && location.coords.latitude, longitude: location && location.coords && location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }} showsUserLocation={true}>
-        {gps()}
+        {/* {gps()} */}
+        <View>
+          {isLoading ? null : (
+            <View>
+              <Marker coordinate={{ latitude: departure.coords.latitude, longitude: departure.coords.longitude }} title="StartingLocation" />
+              <Marker coordinate={{ latitude: arrival.coords.latitude, longitude: arrival.coords.longitude }} title="Finishlocation" />
+              <Polyline coordinates={routeForMap} strokeWidth={7} strokeColor="red" geodesic={true} />
+            </View>
+          )}
+          {listOfPoints && listOfPoints.map((point) => (
+            <Marker coordinate={{ latitude: point.lat, longitude: point.lng }} title="newPoint" />
+          ))}
+        </View>
       </MapView>
     </View>
   );
