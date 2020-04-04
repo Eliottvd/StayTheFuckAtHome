@@ -25,15 +25,33 @@ namespace WalkingDead.Models
         {
             DateTime time = DateTime.Now;
 
-            IEnumerable<User> infecteds = getCurrentlyInfectedUsers();
+            IEnumerable<User> infecteds = getCurrentlyInfectedUsers().GetAwaiter().GetResult();
 
             return Context.Movements.Include(m => m.User).Where(m => infecteds.Contains(m.User) && (DateTime.Now - m.Date).Days <=5); //TODO : date<5
         }
 
-        public IEnumerable<User> getCurrentlyInfectedUsers()
+        public async Task<IEnumerable<User>> getCurrentlyInfectedUsers()
         {
-            Func<User, bool> isInfected = new Func<User, bool>(isUserInfected);
-            return Context.Users.Include(u => u.Tests).Where(u => isUserInfected(u));
+            Console.WriteLine("coucou !");
+            string test = "coucou";
+            Console.WriteLine(test);
+            var users = Context.Users.Include(u => u.Tests);
+            var response = await users.Where(user => user.RegistreNational=="aaaaa").ToListAsync();
+            List<User> usersList = new List<User>();
+
+            if (users.Count() == 0)
+                return usersList;
+
+            foreach (User u in users.AsEnumerable())
+            {
+                if (isUserInfected(u))
+                    usersList.Add(u);
+            }
+
+            return usersList;
+
+
+            //return Context.Users.Include(u => u.Tests).Where(u => isUserInfected(u)).AsEnumerable();
         }
 
         public bool isUserInfected(User user)
@@ -41,6 +59,8 @@ namespace WalkingDead.Models
             List<Test> tests = new List<Test>();
 
             user.Tests.ToList().ForEach(test => tests.Add(test));
+
+            var count = tests.Count;
 
             Test lastTest = tests[0];
 

@@ -4,7 +4,7 @@ namespace WalkingDead.Models
 {
     public class WalkingDeadContext : DbContext
     {
-        public WalkingDeadContext()
+        public WalkingDeadContext() : base()
         {
         }
 
