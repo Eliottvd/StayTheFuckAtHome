@@ -1,24 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "L:\\WalkingDead\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj": {}
+    "C:\\Users\\PierreNadin\\Documents\\Hackathon\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj": {}
   },
   "projects": {
-    "L:\\WalkingDead\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj": {
+    "C:\\Users\\PierreNadin\\Documents\\Hackathon\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "L:\\WalkingDead\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj",
+        "projectUniqueName": "C:\\Users\\PierreNadin\\Documents\\Hackathon\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj",
         "projectName": "WalkingDead",
-        "projectPath": "L:\\WalkingDead\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj",
-        "packagesPath": "C:\\Users\\mrpar\\.nuget\\packages\\",
-        "outputPath": "L:\\WalkingDead\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\obj\\",
+        "projectPath": "C:\\Users\\PierreNadin\\Documents\\Hackathon\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\WalkingDead.csproj",
+        "packagesPath": "C:\\Users\\PierreNadin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\PierreNadin\\Documents\\Hackathon\\StayTheFuckAtHome\\BackEnd\\WalkingDead\\WalkingDead\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "L:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\mrpar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PierreNadin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -80,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
