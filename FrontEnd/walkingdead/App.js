@@ -42,7 +42,7 @@ export default function App() {
   const [geocode, setGeocode] = React.useState(null)
   const [points, setPoints] = React.useState([]);
   const [reactangles, setrectangles] = React.useState([]);
-  const x = 0.00002;
+  const x = 0.0002;
 
   React.useEffect(() => {
     const foo = async () => {
@@ -86,11 +86,13 @@ export default function App() {
     var result = "";
     for(let i = points.length-5; i<points.length;i++)
     {
+      console.log('current result : ', result)
       if(i<0)
         i=0;
-      result += `${points[i].latitude-x},${points[i].longitude-x};${points[i].latitude+x},${points[i].longitude+x}!`
+      result += `${points[i].latitude+x},${points[i].longitude+x};${points[i].latitude-x},${points[i].longitude-x}!`
     }
-    result = result.slice(0,-1)
+    result = result.substring(0, result.length - 2)
+    console.log('end result : ', result)
 
     return result
   }
@@ -123,15 +125,14 @@ export default function App() {
     let to_long = parseFloat(arrival.coords.longitude)
 
 
-    const APIurl = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=sHXA2BvFa3XvnLgpQjzX&
-    app_code=N0w0RZuUd-27zzLTQou1oQ&waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&
-    mode=fastest;bicycle;traffic:disabled&legAttributes=shape&avoidareas=${listPointToString(points)}`
-    //console.log(APIurl)
+    const APIurl = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=xTHAk9tSLqHaOu7vESsB&app_code=svHnYVQdxlfqbnSx-j9bHA&waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&mode=fastest;bicycle;traffic:disabled&legAttributes=shape&avoidareas=${listPointToString(points)}`
+    console.log('APIurl : ', APIurl)
     const result = await fetch(APIurl)
     const resultJson = await result.json()
     let routeCoordinates = []
 
-    console.log(result);
+    console.log(resultJson)
+
     resultJson.response.route[0].leg[0].shape.map(m => {
       let latlong = m.split(',')
       let latitude = parseFloat(latlong[0])
