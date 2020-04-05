@@ -41,6 +41,8 @@ export default function App() {
   const [mapHeight, setMapHeight] = React.useState("65%");
   const [geocode, setGeocode] = React.useState(null)
   const [points, setPoints] = React.useState([]);
+  const [reactangles, setrectangles] = React.useState([]);
+  const x = 0.00002;
 
   React.useEffect(() => {
     const foo = async () => {
@@ -76,6 +78,23 @@ export default function App() {
   }, [points])
 
 
+  const createRectangle = () => {
+
+  }
+
+  const listPointToString = (points) => {
+    var result = "";
+    for(let i = points.length-5; i<points.length;i++)
+    {
+      if(i<0)
+        i=0;
+      result += `${points[i].latitude-x},${points[i].longitude-x};${points[i].latitude+x},${points[i].longitude+x}!`
+    }
+    result = result.slice(0,-1)
+
+    return result
+  }
+
   const getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
@@ -104,11 +123,15 @@ export default function App() {
     let to_long = parseFloat(arrival.coords.longitude)
 
 
-    const APIurl = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=sHXA2BvFa3XvnLgpQjzX&app_code=N0w0RZuUd-27zzLTQou1oQ&waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&mode=fastest;bicycle;traffic:disabled&legAttributes=shape`
+    const APIurl = `https://route.api.here.com/routing/7.2/calculateroute.json?app_id=sHXA2BvFa3XvnLgpQjzX&
+    app_code=N0w0RZuUd-27zzLTQou1oQ&waypoint0=geo!${from_lat},${from_long}&waypoint1=geo!${to_lat},${to_long}&
+    mode=fastest;bicycle;traffic:disabled&legAttributes=shape&avoidareas=${listPointToString(points)}`
+    //console.log(APIurl)
     const result = await fetch(APIurl)
     const resultJson = await result.json()
     let routeCoordinates = []
 
+    console.log(result);
     resultJson.response.route[0].leg[0].shape.map(m => {
       let latlong = m.split(',')
       let latitude = parseFloat(latlong[0])
@@ -286,123 +309,3 @@ const styles = StyleSheet.create({
     lineHeight: 50
   }
 });
-
-// import React, { Component } from 'react';
-// import {
-//     Platform,
-//     StyleSheet,
-//     View
-// } from 'react-native';
-// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-
-// export default class App extends Component {
-//   render() {
-// 	let points = [{latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-//                 {latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-//                 {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-//                 {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.841776681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83646681, longitude: 79.77121907, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83176681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.83976681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82776681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.82076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.81076681, longitude: 79.861319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83276681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.81976681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.867319, weight: 1},
-//                 {latitude: 6.83776681, longitude: 79.865319, weight: 1},
-//                 {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-//                 {latitude: 6.841776681, longitude: 79.869319, weight: 1},
-//                 {latitude: 6.84076681, longitude: 79.871319, weight: 1},
-
-// 	];
-//     return (
-//       <View style ={styles.container}>
-//         <MapView
-// 	  provider={PROVIDER_GOOGLE}
-//           style={styles.map}
-//           region={{
-//             latitude: 6.82646681,
-//             longitude: 79.87121907,
-//             latitudeDelta: 0.09,
-//             longitudeDelta: 0.0121
-//           }}
-//         >
-
-//         <MapView.Heatmap points={points}
-//                          opacity={1}
-//                          radius={20}
-//                          maxIntensity={100}
-//                          gradientSmoothing={10}
-//                          heatmapMode={"POINTS_DENSITY"}/>
-//         </MapView>
-//       </View>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         ...StyleSheet.absoluteFillObject,
-//         height: 400,
-//         width: 400,
-//         justifyContent: 'flex-end',
-//         alignItems: 'center',
-//     },
-//     map: {
-//       ...StyleSheet.absoluteFillObject,
-//     },
-// })
